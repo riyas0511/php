@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Queries</title>
+</head>
+<body>
+    <h1>User Queries</h1>
+    
+    <ul>
+        <!-- Display user queries dynamically from the database -->
+        <?php
+            
+            $host="localhost";
+            $username="root";
+            $password="";
+            $db="form";
+            // Connect to the database
+            $conn = new mysqli($host,$username,$password,$db);
+
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+
+            // Query to retrieve user queries
+            $sql = "SELECT * FROM queries";
+            $result = $conn->query($sql);
+
+            // Display user queries
+            echo "<table border='1'>";
+            echo "<tr><th>Name</th><th>Email</th><th>queries</th></tr>";
+            while ($row = $result->fetch_assoc()) {   
+             echo "<tr><td>{$row['name']}</td><td>{$row['email']}</td><td>{$row['query']}</td></tr>";
+            }echo "</table>";
+
+            // Close database connection
+            $conn->close();
+        ?>
+    </ul>
+</body>
+</html>

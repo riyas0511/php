@@ -1,0 +1,35 @@
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Handle user registration form submission
+
+    $host="localhost";
+$username="root";
+$password="";
+$db="form";
+// Connect to the database
+$conn = new mysqli($host,$username,$password,$db);
+
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Validate and sanitize input data
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $courseCode = mysqli_real_escape_string($conn, $_POST['course_code']);
+
+    // Insert registration information into the database
+    $sql = "INSERT INTO users (name, email, password, course_code) VALUES ('$name', '$email', '$password', '$courseCode')";
+    $result = $conn->query($sql);
+
+    // Close database connection
+    $conn->close();
+
+    if ($result) {
+        echo "Registration successful!";
+    } else {
+        echo "Registration failed.";
+    }
+}
+?>
